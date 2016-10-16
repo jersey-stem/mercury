@@ -1,5 +1,5 @@
-| > [ReadMe](../../README.md) > [Table of Contents](../TOC.md)|
-|-|
+| > [ReadMe](../../README.md) > [Table of Contents](../TOC.md) |
+|:---:|
 
 # MinecraftEdu Server Image
 This image is used to create MinecraftEdu servers.
