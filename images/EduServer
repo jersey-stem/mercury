@@ -1,0 +1,66 @@
+############################################################
+# Dockerfile to build Minecraft Server container images
+# Based on java
+############################################################
+
+# use java base image (debian with latest jre)
+FROM java
+
+MAINTAINER stormymcstorm
+
+################## ENVIORMENT ######################
+ENV MINECRAFT_MEM 1024M
+ENV MINECRAFT_V 1.7.10
+ENV MINECRAFT_SERVER_TYPE "edu"
+ENV MINECRAFT_SERVER_LOCATION /data/server
+ENV MINECRAFT_SERVER_FILE minecraftedu_server.jar
+
+# server rules
+ENV ALIAS_PROTECTION false
+ENV KICK_IDLE_OPS false
+ENV KICK_IDLE_PLAYERS false
+ENV KICK_IDLE_PLAYERS_INTERVAL 5
+ENV LOADED_SAVED_MAP ""
+ENV LOG_IDLE_PLAYERS  false
+ENV RESTRICT_NEW_USERS false
+ENV SAVED_MAP_NAME ""
+ENV SERVER_LANGUAGE "en_US"
+ENV STORE_PLAYERS_WITH_ALIAS true
+ENV TAKE_BACKUPS true
+ENV TEACHER_PASSWORD password
+ENV WRITE_DEBUG_LOG_TO_FILE true
+
+################## SETUP ######################
+RUN useradd -M --uid 1000 minecraft
+
+RUN mkdir /data \
+  && chown minecraft:minecraft /data
+
+VOLUME ["/data"]
+
+COPY start.sh /start
+RUN chmod +x /start
+
+COPY edu-settings.sh /edu-settings
+RUN chmod +x /edu-settings
+
+COPY minecraftedu-server.zip /tmp/minecraftedu-server.zip
+
+################## INSTALLATION ######################
+
+RUN cd /tmp \
+  && unzip minecraftedu-server.zip \
+  && cd /
+
+# for settingss
+RUN chown minecraft:minecraft \
+  /tmp/minecraftedu-server/settings/serverwizardsettings.ini
+
+################## PREP START ######################
+
+EXPOSE 25565
+
+USER minecraft
+
+################## START ######################
+ENTRYPOINT ["/start"]

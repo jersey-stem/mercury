@@ -1,0 +1,55 @@
+############################################################
+# Dockerfile to build Minecraft Bukkit Server container images
+# Based on java
+############################################################
+
+# use java base image (debian with latest jre)
+FROM java
+
+MAINTAINER stormymcstorm
+
+################## ENVIORMENT ######################
+ENV MINECRAFT_V 1.10.2
+ENV MINECRAFT_MEM 1024M
+ENV MINECRAFT_SERVER_TYPE "bukkit"
+ENV MINECRAFT_SERVER_LOCATION /data
+ENV MINECRAFT_SERVER_FILE bukkit_server.jar
+
+ENV MAVEN_OPTS "-Xmx2G"
+
+################## SETUP ######################
+RUN useradd -M --uid 1000 minecraft
+
+RUN mkdir /data \
+  && chown minecraft:minecraft /data
+
+RUN mkdir /tmp/build
+
+VOLUME ["/data"]
+
+COPY start.sh /start
+RUN chmod +x /start
+
+################## INSTALLATION ######################
+
+# download minecraft server
+RUN wget -O /tmp/build/BuildTools.jar \
+  https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+#RUN bash -c git config --global --unset core.autocrlf
+
+RUN cd /tmp/build \
+  && java -Xmx2G -jar BuildTools.jar
+
+RUN cd / \
+  && cp /tmp/build/spigot-$MINECRAFT_V.jar /tmp/$MINECRAFT_SERVER_FILE.jar \
+  && rm -R /tmp/build
+
+################## PREP START ######################
+
+EXPOSE 25565
+
+USER minecraft
+
+################## START ######################
+ENTRYPOINT ["/start"]
