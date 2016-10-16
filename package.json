@@ -1,0 +1,22 @@
+{
+  "name": "mercury",
+  "version": "1.0.0",
+  "description": "The application provides an easy way to manage Minecraft servers using Docker and NodeJs.",
+  "main": "index.js",
+  "scripts": {
+    "compile": "./node_modules/tsc/bin/tsc"
+  },
+  "repository": {
+    "url": "https://github.com/stormymcstorm/mercury",
+    "type": "git"
+  },
+  "author": "Carson Storm <stormymcstorm@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.9.2",
+    "tsc": "^1.20150623.0",
+    "typescript": "^2.0.3",
+    "webpack": "^1.13.2"
+  }
+}

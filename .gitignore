@@ -1,2 +1,8 @@
+*.log
+
+node_modules/
+
 images/minecraftedu-server.zip
-images/minecraftedu-server
+images/minecraftedu-server-example
+images/minecraft-server-example
+images/bukkit-server-example
