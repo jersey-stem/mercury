@@ -1,5 +1,5 @@
 | > [ReadMe](../README.md) |
-|-|
+|:---:|
 
 # Table Of Contents
 
